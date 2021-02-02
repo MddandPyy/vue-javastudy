@@ -1,5 +1,6 @@
 package com.study.demo.service.impl;
 
+import com.study.demo.common.UserContext;
 import com.study.demo.dao.UserDao;
 import com.study.demo.entity.User;
 import com.study.demo.service.UserService;
@@ -16,6 +17,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUserInfo() {
+        User user = UserContext.getUser();
         return userDao.queryUser();
     }
 }

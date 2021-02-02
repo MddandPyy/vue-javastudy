@@ -13,4 +13,6 @@ public class User {
     private Integer age;
 
     private Date createtime;
+
+    private String password;
 }
