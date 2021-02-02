@@ -1,5 +1,6 @@
 package com.study.demo.service.impl;
 
+import com.study.demo.common.BizException;
 import com.study.demo.common.UserContext;
 import com.study.demo.dao.UserDao;
 import com.study.demo.entity.User;
@@ -20,4 +21,17 @@ public class UserServiceImpl implements UserService {
         User user = UserContext.getUser();
         return userDao.queryUser();
     }
+
+    @Override
+    public void addUser(User user) {
+        User user1 = userDao.findUserByName(user.getName());
+        if(user1==null){
+            userDao.addUser(user);
+        }else{
+            throw new BizException(100,"用户名已存在");
+        }
+
+    }
+
+
 }

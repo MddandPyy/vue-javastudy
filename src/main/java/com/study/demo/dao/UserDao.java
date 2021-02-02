@@ -9,4 +9,8 @@ import java.util.List;
 @Component
 public interface UserDao {
     List<User> queryUser();
+
+    void addUser(User user);
+
+    User findUserByName(String name);
 }

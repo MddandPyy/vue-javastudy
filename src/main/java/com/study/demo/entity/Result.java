@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 //生成一个带所有属性的构造函数
 @AllArgsConstructor
 public class Result {
+    private Boolean flag;
     private Integer code;
     private String msg;
     private Object data;

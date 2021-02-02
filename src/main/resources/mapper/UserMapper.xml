@@ -6,4 +6,13 @@
         select * from user
     </select>
 
+    <select id="findUserByName" parameterType="String" resultType="com.study.demo.entity.User">
+        select * from user where name=#{name}
+    </select>
+
+    <insert id="addUser" parameterType="com.study.demo.entity.User" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
+        insert into user(name,age,password,createtime)
+        values (#{name},#{age},#{password},now())
+    </insert>
+
 </mapper>

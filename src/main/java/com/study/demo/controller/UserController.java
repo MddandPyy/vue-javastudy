@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class DemoController {
+public class UserController {
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -38,6 +38,7 @@ public class DemoController {
         pageResult.setData(users);
 
         Result result = new Result();
+        result.setFlag(true);
         result.setCode(200);
         result.setData(pageResult);
         return result;
@@ -49,9 +50,23 @@ public class DemoController {
         String token = "asdfhakjsdhf";
         result.setCode(200);
         result.setData(token);
+        result.setFlag(true);
         Gson gson = new Gson();
         String jsonStr = gson.toJson(user);
         redisTemplate.opsForValue().set(token,jsonStr);
+        return result;
+    }
+
+    @PostMapping("/register")
+    public Result register(@RequestBody User user){
+        //BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        //String encode = bCryptPasswordEncoder.encode(user.getPassword());
+       // user.setPassword(encode);
+        userService.addUser(user);
+
+        Result result = new Result();
+        result.setCode(200);
+        result.setFlag(true);
         return result;
     }
 
