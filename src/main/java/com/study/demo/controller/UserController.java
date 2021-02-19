@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @RestController
@@ -53,7 +54,7 @@ public class UserController {
         result.setFlag(true);
         Gson gson = new Gson();
         String jsonStr = gson.toJson(user);
-        redisTemplate.opsForValue().set(token,jsonStr);
+        redisTemplate.opsForValue().set(token,jsonStr,60*1, TimeUnit.SECONDS);
         return result;
     }
 

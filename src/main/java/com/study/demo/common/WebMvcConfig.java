@@ -26,7 +26,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     //注册拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(tokenInterceptor).addPathPatterns("/**").excludePathPatterns("/login").excludePathPatterns("/register");
+        registry.addInterceptor(tokenInterceptor).addPathPatterns("/**")
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/register");
     }
 
 
