@@ -47,6 +47,7 @@ public class UserController {
 
     @PostMapping("/login")
     public Result login(@RequestBody User user){
+        userService.login(user);
         Result result = new Result();
         String token = "asdfhakjsdhf";
         result.setCode(200);

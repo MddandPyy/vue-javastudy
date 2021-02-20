@@ -40,6 +40,8 @@ public class TokenInterceptor implements HandlerInterceptor {
                 }else{
                     throw new BizException(400,"请登录");
                 }
+            }else{
+                throw new BizException(400,"请登录");
             }
             return true;
     }

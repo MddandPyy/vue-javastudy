@@ -33,5 +33,17 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public void login(User user) {
+        User user1 = userDao.findUserByName(user.getName());
+        if(user1==null){
+            throw new BizException(100,"用户名不存在");
+        }else{
+            if(!user.getPassword().equals(user1.getPassword())){
+                throw new BizException(100,"密码不正确");
+            }
+        }
+    }
+
 
 }
