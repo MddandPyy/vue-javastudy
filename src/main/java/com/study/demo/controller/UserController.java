@@ -49,7 +49,8 @@ public class UserController {
     public Result login(@RequestBody User user){
         userService.login(user);
         Result result = new Result();
-        String token = "asdfhakjsdhf";
+
+        String token = System.currentTimeMillis()+"asdfhakjsdhf";
         result.setCode(200);
         result.setData(token);
         result.setFlag(true);
