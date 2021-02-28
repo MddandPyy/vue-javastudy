@@ -1,6 +1,8 @@
 package com.study.demo.websocket;
 
 import com.google.gson.Gson;
+import com.study.demo.entity.SocketResult;
+import com.study.demo.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +11,9 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * 群发最终版
@@ -36,8 +40,8 @@ public class MyWebsocketServer {
         String username = list.get(0); // 当前用户名*/
 
         //log.info("有新的客户端上线: {}", session.getId());
-        clients.put(session.getId(), session);
-        sendAll(username+"上线了");
+        clients.put(username, session);
+        sendAll(username+":上线了");
 
     }
 
@@ -45,10 +49,11 @@ public class MyWebsocketServer {
     public void onClose(Session session) {
         String sessionId = session.getId();
         //log.info("有客户端离线: {}", sessionId);
-        clients.remove(sessionId);
+
         Map<String, List<String>>  requestParameterMap = session.getRequestParameterMap();
         List<String> list = requestParameterMap.get("username");
         String username = list.get(0); // 当前用户名*/
+        clients.remove(username);
         sendAll(username+":下线了");
     }
 
@@ -93,7 +98,17 @@ public class MyWebsocketServer {
      */
     private void sendAll(String message) {
         for (Map.Entry<String, Session> sessionEntry : clients.entrySet()) {
-            sessionEntry.getValue().getAsyncRemote().sendText(message);
+            Set<String> users = clients.keySet();
+            List<User> collect = users.stream().map((name) -> {
+                User user = new User();
+                user.setName(name);
+                return user;
+            }).collect(Collectors.toList());
+            SocketResult socketResult = new SocketResult();
+            socketResult.setUserNames(collect);
+            socketResult.setMessage(message);
+            String s = gson.toJson(socketResult);
+            sessionEntry.getValue().getAsyncRemote().sendText(s);
         }
     }
 }
