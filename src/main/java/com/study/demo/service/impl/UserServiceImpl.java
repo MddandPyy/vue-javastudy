@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void login(User user) {
+    public User login(User user) {
         User user1 = userDao.findUserByName(user.getName());
         if(user1==null){
             throw new BizException(100,"用户名不存在");
@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
                 throw new BizException(100,"密码不正确");
             }
         }
+        return user1;
     }
 
 

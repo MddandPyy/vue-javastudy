@@ -47,7 +47,7 @@ public class UserController {
 
     @PostMapping("/login")
     public Result login(@RequestBody User user){
-        userService.login(user);
+        User loginUser = userService.login(user);
         Result result = new Result();
 
         String token = System.currentTimeMillis()+"asdfhakjsdhf";
@@ -55,7 +55,7 @@ public class UserController {
         result.setData(token);
         result.setFlag(true);
         Gson gson = new Gson();
-        String jsonStr = gson.toJson(user);
+        String jsonStr = gson.toJson(loginUser);
         redisTemplate.opsForValue().set(token,jsonStr,60*1, TimeUnit.SECONDS);
         return result;
     }
