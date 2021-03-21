@@ -5,6 +5,8 @@ import com.study.demo.entity.PageResult;
 import com.study.demo.entity.Result;
 import com.study.demo.entity.User;
 import com.study.demo.service.UserService;
+import com.study.demo.service.producer.RabbitProducer;
+import com.study.demo.utils.CommonConsant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RabbitProducer rabbitProducer;
 
     @GetMapping("/hello")
     public String sayHello(){
@@ -71,6 +76,13 @@ public class UserController {
         result.setCode(200);
         result.setFlag(true);
         return result;
+    }
+
+    @GetMapping("/testMessage")
+    public void testMessage(){
+        String jsonString= "测试rabbitmq";
+        rabbitProducer.sendMessage(jsonString, CommonConsant.EXCHANGE_NAME_TOPIC, "message.set");
+
     }
 
 
