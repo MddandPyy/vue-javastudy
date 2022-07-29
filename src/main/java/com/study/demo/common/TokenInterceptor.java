@@ -36,7 +36,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                     Gson gson = new Gson();
                     User user = gson.fromJson(o.toString(), User.class);
                     UserContext.setUser(user);
-                    redisTemplate.expire(token,60*1, TimeUnit.SECONDS);
+                    redisTemplate.expire(token,60*20, TimeUnit.SECONDS);
                 }else{
                     throw new BizException(400,"请登录");
                 }

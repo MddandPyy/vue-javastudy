@@ -29,7 +29,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         registry.addInterceptor(tokenInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/login")
                 .excludePathPatterns("/testMessage")
-                .excludePathPatterns("/register");
+                .excludePathPatterns("/register")
+                .excludePathPatterns("/testThread")
+        ;
     }
 
 

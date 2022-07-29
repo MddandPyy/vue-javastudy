@@ -1,9 +1,11 @@
 package com.study.demo.controller;
 
 import com.google.gson.Gson;
+import com.study.demo.entity.Commodity;
 import com.study.demo.entity.PageResult;
 import com.study.demo.entity.Result;
 import com.study.demo.entity.User;
+import com.study.demo.service.CommodityService;
 import com.study.demo.service.UserService;
 import com.study.demo.service.producer.RabbitProducer;
 import com.study.demo.utils.CommonConsant;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +27,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommodityService commodityService;
 
     @Autowired
     private RabbitProducer rabbitProducer;
@@ -50,6 +56,19 @@ public class UserController {
         return result;
     }
 
+    @GetMapping("/search")
+    public Result search(@RequestParam("code") String code){
+        List<Commodity> list = new ArrayList<>();
+        if(!code.isEmpty()){
+            list = commodityService.getCommodityInfoByCode(code);
+        }
+        Result result = new Result();
+        result.setFlag(true);
+        result.setCode(200);
+        result.setData(list);
+        return result;
+    }
+
     @PostMapping("/login")
     public Result login(@RequestBody User user){
         User loginUser = userService.login(user);
@@ -61,7 +80,7 @@ public class UserController {
         result.setFlag(true);
         Gson gson = new Gson();
         String jsonStr = gson.toJson(loginUser);
-        redisTemplate.opsForValue().set(token,jsonStr,60*1, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(token,jsonStr,60*20, TimeUnit.SECONDS);
         return result;
     }
 
